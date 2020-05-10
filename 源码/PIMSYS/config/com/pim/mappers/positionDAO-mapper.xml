@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- namespace,指定要实现的接口 全限定名 -->
+<mapper namespace="com.pim.dao.PositionDao">
+    
+    
+     <select id="selectById" resultType="Position">
+       select *  from Position where id=#{id}
+     </select>
+    
+    
+    <insert id="insert" >
+       insert into position  values(
+       #{id},#{posName},#{level},#{operatorId}, #{sts},#{operatorTime})
+   </insert> 
+   
+  <update id="update">
+      update Position 
+      <set>
+       <if test="posName != null and posName != ''">
+        posName=#{posName},
+       </if>
+       <if test="operatorId !=null and operatorId != '' ">
+        operatorId =#{operatorId },
+       </if>
+       <if test="sts !=null and sts!= '' ">
+        sts=#{sts},
+       </if>
+       <if test="operatorTime !=null and operatorTime != '' ">
+        operatorTime=#{operatorTime},
+       </if>
+       <if test="level !=null and level != '' ">
+        level=#{level},
+       </if>
+      </set>
+       where id=#{id}
+   </update> 
+   
+ <select id="page" resultType="Position">
+       select * from Position limit #{start},#{rows}
+     </select>
+     <select id="count" resultType="Integer">
+       select count(id) from Position
+     </select> 
+      
+     <select id="selectAll" resultType="Position">
+      select * from Position
+     </select>
+     <delete id="delete">
+      delete from Position where id=#{id}
+     </delete>
+    
+     
+</mapper>

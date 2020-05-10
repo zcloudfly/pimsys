@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- namespace,指定要实现的接口 全限定名 -->
+<mapper namespace="com.pim.dao.UsersDao">
+    
+    
+     <select id="selectUserByPhoneAndPaw" resultType="Users">
+       select *
+       from Users where telephone =#{telephone} and pwd =#{pwd}
+     </select>
+    
+    
+   <insert id="insert" >
+       insert into Users(id,uName,telephone,pwd,depId,positionId,roleId,sts,opratorTime) values(
+       #{id},#{uName},#{telephone},#{pwd}, #{depId},#{positionId},#{roleId},#{sts},#{opratorTime})
+   </insert>
+   
+   <update id="update">
+      update Users 
+      <set>
+       <if test="uName != null and uName != ''">
+        uName=#{uName},
+       </if>
+       <if test="telephone != null and telephone != '' ">
+        telephone=#{telephone},
+       </if>
+       <if test="pwd != null and pwd != '' ">
+        pwd=#{pwd},
+       </if>
+       <if test="depId != null and depId!= '' ">
+        depId=#{depId},
+       </if>
+       <if test="positionId !=null and positionId != '' ">
+        positionId=#{positionId},
+       </if>
+       <if test="roleId !=null and roleId != '' ">
+        roleId=#{roleId},
+       </if>
+       <if test="sts !=null and sts!= '' ">
+        sts=#{sts},
+       </if>
+       <if test="opratorTime !=null and opratorTime != '' ">
+        opratorTime=#{opratorTime},
+       </if>
+      </set>
+       where id=#{id}
+   </update>
+   
+   <select id="page" resultType="Users">
+       select * from users limit #{start},#{rows}
+     </select>
+     <select id="count" resultType="Integer">
+       select count(id) from users
+     </select>
+      
+     <select id="selectAll" resultType="Users">
+      select * from users
+     </select>
+     <select id="selectById" resultType="Users">
+      select * from users where id=#{id}
+     </select>
+     
+    
+     
+</mapper>

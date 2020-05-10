@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- namespace,指定要实现的接口 全限定名 -->
+<mapper namespace="com.pim.dao.DeptDao">
+    
+     <resultMap type="Dept" id="DeptRsultMap">
+	      <id property="id" column="id"/>
+	      <result property="parentId" column="parentId"/> 
+	      <collection property="son" javaType="java.util.List" ofType="Dept" select="com.pim.dao.DeptDao.selectByparentId" column="id"/>
+	     <!--  <association property="father" select="com.pim.dao.DeptDao.selectById" column="parentId" /> --> 
+          
+      </resultMap> 
+      
+     <select id="selectById" resultType="Dept">
+       select *  from dept where id=#{id}
+     </select>
+    
+     <select id="selectByparentId" resultType="Dept">
+       select *  from  dept where parentId=#{id}
+     </select>
+   <insert id="insert" >
+       insert into dept(id,name,parentId,operatorId,sts,operatorTime) values(
+       #{id},#{name},#{parentId},#{operatorId}, #{sts},#{operatorTime})
+   </insert>
+   
+  <update id="update">
+      update Dept 
+      <set>
+       <if test="name != null and name != ''">
+        name=#{name},
+       </if>
+       <if test="operatorId!=null and operatorId != '' ">
+        operatorId =#{operatorId },
+       </if>
+       <if test="sts !=null and sts!= '' ">
+        sts=#{sts},
+       </if>
+       <if test="operatorTime !=null and operatorTime != '' ">
+        operatorTime=#{operatorTime},
+       </if>
+       
+       <if test="parentId !=null and parentId != '' ">
+        parentId=#{parentId},
+       </if>
+      </set>
+       where id=#{id}
+   </update> 
+   
+   <select id="page" resultMap="DeptRsultMap">
+       select id,name,parentId,operatorId,sts,operatorTime from Dept limit #{start},#{rows}
+   </select>
+     <select id="count" resultType="Integer">
+       select count(id) from Dept
+     </select>
+      
+     <select id="selectAll" resultMap="DeptRsultMap">
+      select * from Dept <!--  where parentId is null-->
+     </select>
+     
+     <delete id="delete">
+       delete from  dept where id=#{id}
+     </delete>
+    
+     
+</mapper>
